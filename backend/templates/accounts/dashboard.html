@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2>Welcome back, {{ user.first_name|default:user.username }}!</h2>
+        <p class="text-muted">Stay active, participate in ongoing elections.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="mb-3">Ongoing Elections</h4>
+        {% if running %}
+        <div class="row">
+            {% for election in running %}
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 border-start border-4 border-success">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ election.title }}</h5>
+                        <p class="card-text text-truncate">{{ election.description }}</p>
+                        <a href="{% url 'elections:detail' election.id %}" class="btn btn-sm btn-success">Vote Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info">No elections are currently running.</div>
+        {% endif %}
+
+        <h4 class="mt-4 mb-3">Upcoming Elections</h4>
+        <div class="list-group">
+            {% for election in upcoming %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0">{{ election.title }}</h6>
+                    <small>Starts on: {{ election.start_date }}</small>
+                </div>
+                <span class="badge bg-secondary">Upcoming</span>
+            </div>
+            {% empty %}
+            <p>No upcoming elections scheduled.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Profile Status</h5>
+                <hr>
+                <p>Status:
+                    {% if user.voter_profile.status == 'ACTIVE' %}
+                    <span class="badge bg-success">Active</span>
+                    {% else %}
+                    <span class="badge bg-danger">Blocked</span>
+                    {% endif %}
+                </p>
+                <p>Member since: {{ user.date_joined|date }}</p>
+                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+            </div>
+        </div>
+
+        {% if user.is_staff %}
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5>Admin Shortcuts</h5>
+                <hr>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'elections:create' %}" class="btn btn-dark btn-sm">Create Election</a>
+                    <a href="{% url 'accounts:admin_voters_list' %}" class="btn btn-dark btn-sm">Manage Voters</a>
+                    <a href="{% url 'elections:admin_dashboard' %}" class="btn btn-dark btn-sm">Election Control</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

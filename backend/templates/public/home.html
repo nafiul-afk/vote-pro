@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-md-6">
+        <h1 class="display-4 fw-bold text-primary mb-4">Secure. Transparent. Easy.</h1>
+        <p class="lead text-muted mb-4">
+            Participate in democratic processes from the comfort of your home. Our system ensures your vote is secret
+            and counted accurately using industry-standard security.
+        </p>
+        <div class="d-grid gap-2 d-md-flex">
+            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg px-4 me-md-2">Get Started</a>
+            <a href="{% url 'elections:list' %}" class="btn btn-outline-secondary btn-lg px-4">View Elections</a>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <i class="fas fa-vote-yea fa-10x text-primary opacity-25"></i>
+    </div>
+</div>
+
+<div class="row pt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4">
+            <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+            <h3>Secure</h3>
+            <p>Advanced hashing and validation to protect every single vote cast.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4">
+            <i class="fas fa-bolt fa-3x text-primary mb-3"></i>
+            <h3>Real-time</h3>
+            <p>Immediate result generation as soon as the election window closes.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4">
+            <i class="fas fa-users fa-3x text-primary mb-3"></i>
+            <h3>Inclusive</h3>
+            <p>Designed to be accessible for everyone, anywhere, on any device.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

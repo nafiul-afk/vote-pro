@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Register - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h2 class="text-center mb-4">Voter Registration</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="{% url 'accounts:login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

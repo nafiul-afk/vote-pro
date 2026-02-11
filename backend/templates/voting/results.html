@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Results - {{ election.title }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12 text-center">
+        <h1>Election Results</h1>
+        <h3 class="text-primary">{{ election.title }}</h3>
+        <p class="text-muted">Total Votes Cast: <strong>{{ total_votes }}</strong></p>
+    </div>
+</div>
+
+{% if winner %}
+<div class="row justify-content-center mb-5">
+    <div class="col-md-6">
+        <div class="card bg-warning text-dark text-center shadow">
+            <div class="card-body">
+                <i class="fas fa-crown fa-3x mb-3"></i>
+                <h2>WINNER</h2>
+                <h1 class="display-4 fw-bold">{{ winner.name }}</h1>
+                <p class="h4">{{ winner.vote_count }} Votes ({{ winner.vote_count|add:0|divisibleby:total_votes }}%)</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-dark text-white">Detailed Vote Breakdown</div>
+            <div class="card-body">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Candidate</th>
+                            <th>Votes</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for candidate in candidates %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if candidate.image %}
+                                    <img src="{{ candidate.image.url }}" class="rounded me-3" width="40">
+                                    {% endif %}
+                                    <span class="fw-bold">{{ candidate.name }}</span>
+                                </div>
+                            </td>
+                            <td>{{ candidate.vote_count }}</td>
+                            <td>
+                                <div class="progress" style="height: 20px;">
+                                    {% widthratio candidate.vote_count total_votes 100 as pct %}
+                                    <div class="progress-bar" role="progressbar" style="width: {{ pct }}%;"
+                                        aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100">{{ pct }}%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <a href="{% url 'elections:list' %}" class="btn btn-secondary">Back to Elections</a>
+</div>
+{% endblock %}

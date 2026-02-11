@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-9">
+        <h2>Admin Portal: Election Management</h2>
+    </div>
+    <div class="col-md-3 text-end">
+        <a href="{% url 'elections:create' %}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Create
+            Election</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Dates</th>
+                            <th>Status</th>
+                            <th>Candidates</th>
+                            <th>Votes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for election in elections %}
+                        <tr>
+                            <td class="fw-bold">{{ election.title }}</td>
+                            <td><small>{{ election.start_date|date:"Short" }} - {{ election.end_date|date:"Short"
+                                    }}</small></td>
+                            <td>
+                                {% if election.status == 'RUNNING' %}
+                                <span class="badge bg-success">Running</span>
+                                {% elif election.status == 'FINISHED' %}
+                                <span class="badge bg-danger">Finished</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Upcoming</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ election.candidates.count }}</td>
+                            <td>{{ election.votes.count }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{% url 'elections:edit' election.id %}" class="btn btn-sm btn-outline-dark"
+                                        title="Edit Election"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'elections:add_candidate' election.id %}"
+                                        class="btn btn-sm btn-outline-primary" title="Add Candidate"><i
+                                            class="fas fa-user-plus"></i></a>
+                                    <a href="{% url 'voting:results' election.id %}"
+                                        class="btn btn-sm btn-outline-success" title="View Results"><i
+                                            class="fas fa-chart-bar"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

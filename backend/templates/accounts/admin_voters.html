@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Voters - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2>Voter Management</h2>
+        <p class="text-muted">Review, block, or unblock voters here.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Joined</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for voter in voters %}
+                        <tr>
+                            <td>{{ voter.user.username }}</td>
+                            <td>{{ voter.user.get_full_name }}</td>
+                            <td>{{ voter.user.email }}</td>
+                            <td>
+                                {% if voter.status == 'ACTIVE' %}
+                                <span class="badge bg-success">Active</span>
+                                {% else %}
+                                <span class="badge bg-danger">Blocked</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ voter.created_at|date }}</td>
+                            <td>
+                                <a href="{% url 'accounts:toggle_voter_status' voter.id %}"
+                                    class="btn btn-sm {% if voter.status == 'ACTIVE' %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+                                    {% if voter.status == 'ACTIVE' %}Block{% else %}Unblock{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

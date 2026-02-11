@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Elections - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Browse Elections</h2>
+    </div>
+    <div class="col-md-4">
+        <form method="get" class="d-flex">
+            <input type="text" name="q" class="form-control me-2" placeholder="Search..." value="{{ query }}">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    {% for election in page_obj %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h4 class="card-title">{{ election.title }}</h4>
+                    {% if election.status == 'RUNNING' %}
+                    <span class="badge bg-success">Running</span>
+                    {% elif election.status == 'FINISHED' %}
+                    <span class="badge bg-danger">Finished</span>
+                    {% else %}
+                    <span class="badge bg-secondary">Upcoming</span>
+                    {% endif %}
+                </div>
+                <p class="text-muted small">Period: {{ election.start_date|date:"M d" }} - {{ election.end_date|date:"M
+                    d, Y" }}</p>
+                <p class="card-text">{{ election.description|truncatewords:30 }}</p>
+                <div class="mt-auto">
+                    <a href="{% url 'elections:detail' election.id %}" class="btn btn-primary">Details & Vote</a>
+                    {% if election.status == 'FINISHED' %}
+                    <a href="{% url 'voting:results' election.id %}" class="btn btn-outline-dark">View Results</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <p class="lead">No elections found matching your search.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if page_obj.has_other_pages %}
+<nav>
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}">&laquo;
+                First</a></li>
+        <li class="page-item"><a class="page-link"
+                href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link"
+                href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a></li>
+        <li class="page-item"><a class="page-link"
+                href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}{{ title }} - Vote Pro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h2 class="mb-4">{{ title }}</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Save Election</button>
+                    <a href="{% url 'elections:admin_dashboard' %}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
