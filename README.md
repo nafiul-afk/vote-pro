@@ -39,22 +39,49 @@ A complete, production-ready Vote Pro system built with Django 4.2+ and MySQL. T
 - Environment: python-dotenv for configuration
 
 ## Project Structure
+Directory structure:
 ```text
-vote-pro/
-├── backend/
-│   ├── manage.py
-│   ├── core/           # Project settings & root URLs
-│   ├── accounts/       # User management & voter profiles
-│   ├── elections/      # Election & Candidate CRUD
-│   ├── voting/         # Vote casting & results logic
-│   ├── templates/      # Global templates (Bootstrap 5)
-│   ├── static/         # CSS/JS assets
-│   └── requirements.txt
-├── img/                # Project screenshots
-├── .env.example        # Configuration template
-├── README.md
-└── LICENSE
+└── nafiul-afk-vote-pro/
+    ├── requirements.txt
+    └── backend/
+        ├── manage.py
+        ├── requirements.txt
+        ├── accounts/
+        │   ├── __init__.py
+        │   ├── admin.py
+        │   ├── forms.py
+        │   ├── models.py
+        │   ├── urls.py
+        │   └── migrations/
+        │       ├── 0001_initial.py
+        │       └── __init__.py
+        ├── core/
+        │   ├── __init__.py
+        │   ├── asgi.py
+        │   ├── urls.py
+        │   └── wsgi.py
+        ├── elections/
+        │   ├── __init__.py
+        │   ├── admin.py
+        │   ├── forms.py
+        │   ├── urls.py
+        │   └── migrations/
+        │       └── __init__.py
+        ├── templates/
+        │   ├── accounts/
+        │   │   ├── login.html
+        │   │   └── register.html
+        │   └── elections/
+        │       ├── candidate_form.html
+        │       └── election_form.html
+        └── voting/
+            ├── __init__.py
+            ├── admin.py
+            ├── urls.py
+            └── migrations/
+                └── __init__.py
 ```
+
 
 ## Installation & Setup
 
